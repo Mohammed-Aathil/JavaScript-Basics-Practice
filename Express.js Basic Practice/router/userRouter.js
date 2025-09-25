@@ -3,8 +3,9 @@ import jwt from "jsonwebtoken"
 const router = express.Router()
 
 import users from "../model/schema.js";
+import { userAuth, authorize } from "../middleware/auth.js";
 
-router.post("/usercreation", async (req, res) => {
+router.post("/usercreation", userAuth, authorize(["Admin", "User"]), async (req, res) => {
   const newUser = await users.create(req.body)
   res.json(newUser)
 })
